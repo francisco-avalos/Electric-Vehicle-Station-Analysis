@@ -619,54 +619,6 @@ output <- all.combined %>%
             total_hours_in_maintenance = round(sum(minutes_diff, na.rm = TRUE)/60),
             total_days_in_maintenance = round(sum(minutes_diff, na.rm = TRUE)/1440),
             single_im_days = n_distinct(single_im_day, na.rm = TRUE)
-            # total_sessions = sum(sessions, na.rm = TRUE),
-            # total_minutes = sum(minutes, na.rm = TRUE),
-            # total_MWh = sum(session_kwh, na.rm = TRUE)/1000,
-            # total_customers = sum(unique_customers, na.rm = TRUE),
-            # total_unique_customers_per_1000s = sum(unique_customers, na.rm = TRUE)/1000,
-            # uptime_days = n_distinct(flowdate[mtbf_flag==0]),
-            # uptime_days_cooler = n_distinct(flowdate[(mtbf_flag==0) & (cooler_than_normal==1)]),
-            # uptime_days_normal = n_distinct(flowdate[(mtbf_flag==0) & (normal==1)]),
-            # uptime_days_warmer = n_distinct(flowdate[(mtbf_flag==0) & (warmer_than_normal==1)]),
-            # 
-            # downtime_days = n_distinct(flowdate[mtbf_flag!=0]), 
-            # downtime_days_cooler = n_distinct(flowdate[(mtbf_flag!=0) & (cooler_than_normal==1)]),
-            # downtime_days_normal = n_distinct(flowdate[(mtbf_flag!=0) & (normal==1)]),
-            # downtime_days_warmer = n_distinct(flowdate[(mtbf_flag!=0) & (warmer_than_normal==1)]),
-            # 
-            # 
-            # cooler_than_normal_days = sum(cooler_than_normal), 
-            # normal_days = sum(normal),
-            # warmer_than_normal_days = sum(warmer_than_normal),
-            # 
-            # total_sessions = sum(sessions, na.rm = TRUE),
-            # sessions_on_cooler_days = sum(sessions[cooler_than_normal==1], na.rm = TRUE),
-            # sessions_on_normal_days = sum(sessions[normal==1], na.rm = TRUE),
-            # sessions_on_warmer_days = sum(sessions[warmer_than_normal==1], na.rm = TRUE),
-            # 
-            # total_customers = sum(unique_customers, na.rm = TRUE),
-            # uniq_customers_on_cooler_days = sum(unique_customers[cooler_than_normal==1], na.rm = TRUE),
-            # uniq_customers_on_normal_days = sum(unique_customers[normal==1], na.rm = TRUE),
-            # uniq_customers_on_warmer_days = sum(unique_customers[warmer_than_normal==1], na.rm = TRUE),
-            # 
-            # total_minutes = sum(minutes, na.rm = TRUE),
-            # minutes_charging_on_cooler_days = sum(minutes[cooler_than_normal==1], na.rm = TRUE),
-            # minutes_charging_on_normal_days = sum(minutes[normal==1], na.rm = TRUE),
-            # minutes_charging_on_warmer_days = sum(minutes[warmer_than_normal==1], na.rm = TRUE),
-            # 
-            # total_session_kWh = sum(session_kwh, na.rm = TRUE),
-            # session_kWh_on_cooler_days = sum(session_kwh[cooler_than_normal==1], na.rm = TRUE),
-            # session_kWh_on_normal_days = sum(session_kwh[normal==1], na.rm = TRUE),
-            # session_kWh_on_warmer_days = sum(session_kwh[warmer_than_normal==1], na.rm = TRUE),
-            # 
-            # total_session_MWh = sum(session_kwh, na.rm = TRUE)/1000,
-            # session_MWh_on_cooler_days = sum(session_kwh[cooler_than_normal==1], na.rm = TRUE)/1000,
-            # session_MWh_on_normal_days = sum(session_kwh[normal==1], na.rm = TRUE)/1000,
-            # session_MWh_on_warmer_days = sum(session_kwh[warmer_than_normal==1], na.rm = TRUE)/1000,
-            # distance_to_nearest_charger = max(distances_km), # max here due to summarize, but changes nothing
-            # dist_to_other_charger_classification = case_when(max(distances_km) <= 5 ~ 'A',
-            #                                                  max(distances_km) <= 10 ~ 'B',
-            #                                                  TRUE ~ 'C') 
   )
 
 

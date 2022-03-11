@@ -4,21 +4,13 @@ library(ggplot2)
 library(ggmap)
 library(imputeTS)
 library(car)
-
-
 library(sf)
 library(sp)
 library(raster)
-
 library(gstat)
-# library(automap)
-
-library(car) # symbox
-# install.packages('ggrepel')
-library(ggrepel) # for better point labeling
-# install.packages('ggvoronoi')
+library(ggrepel)
 library(ggvoronoi)
-library(geodist) # geodist()
+library(geodist)
 
 
 
@@ -411,61 +403,6 @@ wa_df[which(wa_df$station_id %in% update_stations), ]$station_lat_y_axis_unique 
 rm(stations_w_shared_coords, list_of_stations_w_shared_coords, 
    update_stations)
 
-
-# g <- ggplot(data=im_df, aes(x=x_axis, y=y_axis))
-# g + geom_point() +
-#   labs(title = "Original coordinates",
-#        x='x', y='y')
-# 
-# g <- ggplot(data=im_df, aes(x=x_axis_unique, y=y_axis_unique))
-# g + geom_point() +
-#   labs(title = "Unique coordinates",
-#        x='x', y='y')
-# 
-# 
-# 
-# g <- ggplot(data=wa_df, aes(x=x_axis, y=y_axis))
-# g + geom_point() +
-#   labs(title = "Original coordinates",
-#        x='x', y='y')
-# 
-# g <- ggplot(data=wa_df, aes(x=x_axis_unique, y=y_axis_unique))
-# g + geom_point() +
-#   labs(title = "Unique coordinates",
-#        x='x', y='y')
-# 
-# 
-# g <- ggplot(data=co_df, aes(x=x_axis, y=y_axis))
-# g + geom_point() +
-#   labs(title = "Original coordinates",
-#        x='x', y='y')
-# 
-# g <- ggplot(data=co_df, aes(x=x_axis_unique, y=y_axis_unique))
-# g + geom_point() +
-#   labs(title = "Unique coordinates",
-#        x='x', y='y')
-
-
-
-# 
-# # this saved me from loosing 9 points
-# length(unique(wa_df$x_axis))
-# length(unique(wa_df$x_axis_unique))
-# 
-# 
-# # this saved me from loosing 95 points
-# length(unique(im_df$x_axis))
-# length(unique(im_df$x_axis_unique))
-# 
-# # this saved from from loosing 5 points
-# length(unique(co_df$x_axis))
-# length(unique(co_df$x_axis_unique))
-
-
-##### adding temperature information 
-
-## this appears to be only necessary for wa_df
-# wa_df$temps <- na_kalman(wa_df$temps)
 
 
 
@@ -1090,83 +1027,6 @@ g +
   geom_histogram(bins = 30) +
   labs(title = 'Session kWh distribution - Across all temperatures')
 summary(data.df$unique_customers)
-
-
-
-
-## same summary as above but broken out by station model and station-im-level (station instance)
-
-# colnames(im_df) <- colnames(co_df)
-# data.df <- rbind(im_df, co_df, wa_df)
-
-
-
-
-# agg.df <- data.df %>% 
-#   group_by(station_id, start_period, im_flag) %>% 
-#   summarise(day_counts = n(), 
-#             sum_of_sessions = sum(sessions, na.rm = TRUE),
-#             sum_of_im_minutes = sum(minutes_diff, na.rm = TRUE))
-# 
-# 
-# 
-# 
-# 
-# test.subset.df <- intermediate.data.of.interest.df[, c('sessions', 'minutes', 'unique_customers', 'bucketed_im_minutes.v10', 'running.im.now', 
-#                                                        'remaining_days')]
-# 
-# 
-# l.mod1 <- lm(remaining_days ~ sessions + minutes + unique_customers + 
-#                bucketed_im_minutes.v10 + running.im.now, data = test.subset.df)
-# 
-# summary(l.mod1)
-
-##################
-
-# head(data.df,2)
-# 
-# # subset(data.df, is.na(im_start))
-# 
-# im.only.data.df <- subset(data.df, !is.na(im_date))
-# non.im.data.df <- subset(data.df, is.na(im_date))
-# # dim(data.df)
-# 
-# # head(im.only.data.df, 2)
-# hist(im.only.data.df$sessions)
-# hist(im.only.data.df$minutes)
-# hist(im.only.data.df$session_kwh)
-# hist(im.only.data.df$unique_customers)
-# 
-# hist(non.im.data.df$sessions)
-# hist(non.im.data.df$minutes)
-# hist(non.im.data.df$session_kwh)
-# hist(non.im.data.df$unique_customers)
-
-
-
-
-
-
-
-
-
-
-# exploring 
-
-# hist(data.df$minutes, breaks = 50)
-# summary(data.df$minutes)
-# 
-# hist(subset(data.df, minutes<=500)$minutes, breaks = 50)
-# summary(subset(data.df, minutes<=500)$minutes)
-# hist(subset(data.df, minutes<=500)$minutes_diff, breaks = 50)
-# 
-# 
-# im.only.df <- subset(data.df, im_flag=='IM')
-# hist(im.only.df$minutes_diff)
-# hist(im.only.df[which(im.only.df$minutes_diff < 1000), ]$minutes_diff, main='IM minutes Histogram for IM < 1000')
-# hist(im.only.df[which(im.only.df$minutes_diff > 1000), ]$minutes_diff, main='IM minutes Histogram for IM > 1000')
-# hist(im.only.df[which(im.only.df$minutes_diff > 1300), ]$minutes_diff, main='IM minutes Histogram for IM > 1300')
-
 
 
 
@@ -2053,132 +1913,6 @@ tapply(overall.station.operations.combined$mtbf,
        overall.station.operations.combined$charger_company_col, 
        summary)
 
-
-
-# ####################################################################
-# ####################################################################
-# ####################################################################
-# ####################################################################
-# # get mean time between failures -- temperature
-# ####################################################################
-# ## Weibull distribution might be better equipped to account for temperatures
-# 
-# 
-# overall.station.operations.co <- co_df %>% 
-#   group_by(station_id, charger_company_col) %>% 
-#   summarize(uptime_midpoint_temp = median(temps),
-#             dowtime_customers = n_distinct(mtbf_flag[mtbf_flag!=0]))
-# 
-# subset(overall.station.operations.co, dowtime_customers == 0)
-# 
-# # remove those stations whose only IM in the two year span was less than 30 minutes
-# co_df.2 <- subset(co_df, !(station_id %in% c(386, 505, 678)))
-# overall.station.operations.co <- co_df.2 %>%
-#   group_by(station_id, charger_company_col) %>%
-#   summarize(uptime_midpoint_temp = median(temps),
-#             dowtime_customers = n_distinct(mtbf_flag[mtbf_flag!=0]))
-# 
-# overall.station.operations.co$mtbf <- 
-#   mean_x_between_issues(overall.station.operations.co$uptime_midpoint_temp,
-#                         overall.station.operations.co$dowtime_customers)
-# 
-# 
-# g <- ggplot(data = overall.station.operations.co,
-#             aes(x=mtbf, fill=charger_company_col, col=charger_company_col))
-# g + geom_histogram(bins=40) +
-#   labs(title = 'Mean midpoint temperature between failures distribution',
-#        subtitle = 'Cold temperatures')
-# 
-# tapply(overall.station.operations.co$mtbf,
-#        overall.station.operations.co$charger_company_col,
-#        summary)
-# 
-# 
-# 
-# 
-# overall.station.operations.im <- im_df %>% 
-#   group_by(station_id, charger_company_col) %>% 
-#   summarize(uptime_midpoint_temp = median(temps),
-#             dowtime_customers = n_distinct(mtbf_flag[mtbf_flag!=0]))
-# 
-# subset(overall.station.operations.im, dowtime_customers == 0)
-# 
-# # remove those stations whose only IM in the two year span was less than 30 minutes
-# im_df.2 <- subset(im_df, !(station_id %in% c(593,6816,40843)))
-# overall.station.operations.im <- im_df.2 %>%
-#   group_by(station_id, charger_company_col) %>%
-#   summarize(uptime_midpoint_temp = median(temps),
-#             dowtime_customers = n_distinct(mtbf_flag[mtbf_flag!=0]))
-# 
-# overall.station.operations.im$mtbf <- 
-#   mean_x_between_issues(overall.station.operations.im$uptime_midpoint_temp,
-#                         overall.station.operations.im$dowtime_customers)
-# 
-# 
-# g <- ggplot(data = overall.station.operations.im,
-#             aes(x=mtbf, fill=charger_company_col, col=charger_company_col))
-# g + geom_histogram(bins=40) +
-#   labs(title = 'Mean midpoint temperature between failures distribution',
-#        subtitle = 'Intermediate temperatures')
-# 
-# tapply(overall.station.operations.im$mtbf,
-#        overall.station.operations.im$charger_company_col,
-#        summary)
-# 
-# 
-# 
-# 
-# 
-# 
-# overall.station.operations.wa <- wa_df %>% 
-#   group_by(station_id, charger_company_col) %>% 
-#   summarize(uptime_midpoint_temp = median(temps),
-#             dowtime_customers = n_distinct(mtbf_flag[mtbf_flag!=0]))
-# 
-# subset(overall.station.operations.wa, dowtime_customers == 0)
-# 
-# # remove those stations whose only IM in the two year span was less than 30 minutes
-# # wa_df.2 <- subset(wa_df, !(station_id %in% c(379,415,423,516,519,550,562,563,
-# #                                              648,854,864,1221,1224,5325)))
-# overall.station.operations.wa <- wa_df %>%
-#   group_by(station_id, charger_company_col) %>%
-#   summarize(uptime_midpoint_temp = median(temps),
-#             dowtime_customers = n_distinct(mtbf_flag[mtbf_flag!=0]))
-# 
-# overall.station.operations.wa$mtbf <- 
-#   mean_x_between_issues(overall.station.operations.wa$uptime_midpoint_temp,
-#                         overall.station.operations.wa$dowtime_customers)
-# # overall.station.operations.wa$mtbf <- overall.station.operations.wa$uptime_customers /
-# #   overall.station.operations.wa$dowtime_customers
-# 
-# 
-# g <- ggplot(data = overall.station.operations.wa,
-#             aes(x=mtbf, fill=charger_company_col, col=charger_company_col))
-# g + geom_histogram(bins=40) +
-#   labs(title = 'Mean midpoint temperature between failures distribution',
-#        subtitle = 'Warm temperatures')
-# 
-# tapply(overall.station.operations.wa$mtbf,
-#        overall.station.operations.wa$charger_company_col,
-#        summary)
-# 
-# 
-# overall.station.operations.combined <- rbind(overall.station.operations.co,
-#                                              overall.station.operations.im,
-#                                              overall.station.operations.wa)
-# 
-# 
-# 
-# 
-# g <- ggplot(data = overall.station.operations.combined, 
-#             aes(x=mtbf, fill=charger_company_col, col=charger_company_col))
-# g + geom_histogram(bins=40) +
-#   labs(title = 'Mean midpoint temperature between failures distribution',
-#        subtitle = 'All temperatures')
-# 
-# tapply(overall.station.operations.combined$mtbf,
-#        overall.station.operations.combined$charger_company_col, 
-#        summary)
 
 
 
